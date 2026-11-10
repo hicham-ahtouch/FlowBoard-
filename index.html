@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./src/output.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="JS/api.js" defer></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <header class="flex justify-between items-center bg-white px-8 py-4 shadow-sm">
+
+        <h1 class="text-2xl font-bold text-gray-800">
+            FlowBoard
+        </h1>
+        <button class="bg-blue-600 text-white px-5 py-2 rounded-lg ">
+            Nouvelle carte
+        </button>
+    </header>
+
+<section class="flex flex-col md:flex-row gap-4 p-6">
+
+    <select id="priority" class="border border-gray-300 rounded-lg px-4 py-2 bg-white">
+        <option value="">les priorites</option>
+        <option value="high">Haute</option>
+        <option value="medium">Moyenne</option>
+        <option value="low">Bas</option>
+    </select>
+
+    <select id="assignee" class="border border-gray-300 rounded-lg px-4 py-2 bg-white">
+        <option value="">les assignes</option>
+    </select>
+
+    <input type="text" id="search" placeholder="Rechercher une tâche..."class=" border border-gray-300 rounded-lg px-4 py-2 flex-1">
+    <button class="bg-gray-600 text-white px-5 py-2 rounded-lg hover:bg-gray-700">
+        Reinitialiser
+    </button>
+</section>
+<main class="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
+
+    <section class="bg-gray-200 rounded-lg p-4">
+        <h2 class="text-lg font-bold mb-4">To Do</h2>
+        <div id="todo-cards"></div>
+    </section>
+
+    <section class="bg-gray-200 rounded-lg p-4">
+        <h2 class="text-lg font-bold mb-4">In Progress</h2>
+        <div id="progress-cards"></div>
+    </section>
+
+    <section class="bg-gray-200 rounded-lg p-4">
+        <h2 class="text-lg font-bold mb-4">Done</h2>
+        <div id="done-cards"></div>
+    </section>
+
+</main>
+</body>
+
+</html>
