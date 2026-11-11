@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./src/output.css">
     <link rel="stylesheet" href="./css/style.css">
-    <script src="JS/api.js" defer></script>
+    <script type="module" src="./JS/api.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Document</title>
 </head>
 
@@ -16,47 +17,86 @@
         <h1 class="text-2xl font-bold text-gray-800">
             FlowBoard
         </h1>
-        <button class="bg-blue-600 text-white px-5 py-2 rounded-lg ">
+        <button id="add-task" class="bg-blue-600 text-white px-5 py-2 rounded-lg ">
             Nouvelle carte
         </button>
+        <form id="task-form"
+            class="hidden bg-white shadow-xl rounded-xl p-6 w-full max-w-md mx-auto mt-6 flex-col gap-4">
+            <div class="flex flex-col gap-2">
+                <label for="title">task title</label>
+                <input type="text" id="title" placeholder="enter task title"
+                    class="border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="flex flex-col gap-2">
+                <label for="priority">priority</label>
+
+                <select id="priority"
+                    class="border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value=""> choisir un priority</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">low</option>
+                </select>
+            </div>
+            <div class="flex flex-col gap-2">
+                <label for="status">status</label>
+                <select id="status"
+                    class="border border-gray-300 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">choisir un status</option>
+                    <option value="todo">To Do</option>
+                    <option value="in-progress">In-Progress</option>
+                    <option value="done">Done</option>
+                </select>
+            </div>
+            <div class="flex justify-end gap-3 mt-2">
+                <button type="submit"> add task</button>
+                <button type="button" id="cancel-task"> cancel</button>
+            </div>
+        </form>
     </header>
 
-<section class="flex flex-col md:flex-row gap-4 p-6">
+    <section class="flex flex-col md:flex-row gap-4 p-6">
 
-    <select id="priority" class="border border-gray-300 rounded-lg px-4 py-2 bg-white">
-        <option value="">les priorites</option>
-        <option value="high">Haute</option>
-        <option value="medium">Moyenne</option>
-        <option value="low">Bas</option>
-    </select>
+        <select id="priority" class="border border-gray-300 rounded-lg px-4 py-2 bg-white">
+            <option value="">les priorites</option>
+            <option value="high">high</option>
+            <option value="medium">medium</option>
+            <option value="low">low</option>
+        </select>
 
-    <select id="assignee" class="border border-gray-300 rounded-lg px-4 py-2 bg-white">
-        <option value="">les assignes</option>
-    </select>
+        <select id="assignee" class="border border-gray-300 rounded-lg px-4 py-2 bg-white">
+            <option value="">les assignes</option>
+        </select>
 
-    <input type="text" id="search" placeholder="Rechercher une tâche..."class=" border border-gray-300 rounded-lg px-4 py-2 flex-1">
-    <button class="bg-gray-600 text-white px-5 py-2 rounded-lg hover:bg-gray-700">
-        Reinitialiser
-    </button>
-</section>
-<main class="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
-
-    <section class="bg-gray-200 rounded-lg p-4">
-        <h2 class="text-lg font-bold mb-4">To Do</h2>
-        <div id="todo-cards"></div>
+        <input type="text" id="search" placeholder="Rechercher une tâche..."
+            class=" border border-gray-300 rounded-lg px-4 py-2 flex-1">
+        <button class="bg-gray-600 text-white px-5 py-2 rounded-lg hover:bg-gray-700">
+            Reinitialiser
+        </button>
+        <div id="err-affichage" class="hidden flex justify-between items-center ">
+            <p> something wrong happend</p>
+            <button id="try_again" type="button"
+                class="bg-gray-600 text-white px-5 py-2 rounded-lg hover:bg-gray-700">ressayer</button>
+        </div>
     </section>
+    <main class="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
 
-    <section class="bg-gray-200 rounded-lg p-4">
-        <h2 class="text-lg font-bold mb-4">In Progress</h2>
-        <div id="progress-cards"></div>
-    </section>
+        <section class="bg-gray-200 rounded-lg p-4">
+            <h2 class="text-lg font-bold mb-4">To Do</h2>
+            <div id="todo-cards"></div>
+        </section>
 
-    <section class="bg-gray-200 rounded-lg p-4">
-        <h2 class="text-lg font-bold mb-4">Done</h2>
-        <div id="done-cards"></div>
-    </section>
+        <section class="bg-gray-200 rounded-lg p-4">
+            <h2 class="text-lg font-bold mb-4">In Progress</h2>
+            <div id="progress-cards"></div>
+        </section>
 
-</main>
+        <section class="bg-gray-200 rounded-lg p-4">
+            <h2 class="text-lg font-bold mb-4">Done</h2>
+            <div id="done-cards"></div>
+        </section>
+
+    </main>
 </body>
 
 </html>
