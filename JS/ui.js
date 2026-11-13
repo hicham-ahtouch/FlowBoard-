@@ -1,5 +1,7 @@
 
-let tasks = []
+export const state = {
+    cards: []
+};
 
 export function affichage_cards(data) {
 
@@ -61,14 +63,24 @@ export function handletaskform(){
             priority : priority,
             status: status
         };
-        tasks.push(newtask)
+        // console.log(newtask);
+        
+        state.cards.push(newtask)
+        console.log(state.cards);
+        
         document.querySelector('#todo-cards').innerHTML = ""
         document.querySelector('#progress-cards').innerHTML = ""
-document.querySelector('#done-cards').innerHTML = ""
-affichage_cards(tasks);
+        document.querySelector('#done-cards').innerHTML = ""
+        affichage_cards(state.cards);
         form.reset();
     });
 
+}
+
+export function retry_btn(fetchcards){
+    document.querySelector('#try_again').addEventListener('click', function(){
+        fetchcards()
+    })
 }
 // handletaskform()
 
