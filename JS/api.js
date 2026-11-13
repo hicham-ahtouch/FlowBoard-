@@ -14,11 +14,18 @@ function fetchcards() {
         .then(data => {
             state.cards = data;
             affichage_cards(state.cards )
-            document.querySelector('#loading').classList.add('hidden')
+            Swal.fire({
+                title : 'loading cards...',
+                text : 'please wait...',
+                allowOutsideClick: false,
+                didOpen : () => {
+                    Swal.showLoading();
+                }
+            });
             document.querySelector('#err-affichage').classList.add('hidden')
         })
         .catch(error200 => {
-            document.querySelector('#loading').classList.remove('hidden')
+            Swal.close();
             document.querySelector('#err-affichage').classList.remove('hidden');
             console.log(error200);
 
