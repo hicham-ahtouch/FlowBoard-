@@ -1,0 +1,38 @@
+
+import { state, affichage_cards, handletaskform, retry_btn } from './ui.js';
+function fetchcards() {
+
+    // document.querySelector('#loading').classList.remove('hidden');
+
+    Swal.fire({ 
+                title : 'loading cards...',
+                text : 'please wait...',
+                allowOutsideClick: false,
+                didOpen : () => {
+                    Swal.showLoading();
+    }})
+    fetch('https://flowboard-api-virid.vercel.app/cards')
+        .then(Response => {
+            if (Response.ok === false) {
+                throw new Error('something went wrong!!!')
+            }
+            return Response.json()
+        })
+        .then(data => {
+            state.cards = data;
+            affichage_cards(state.cards )
+            Swal.close();
+            
+            document.querySelector('#err-affichage').classList.add('hidden')
+        })
+        .catch(error200 => {
+            Swal.close();
+            document.querySelector('#err-affichage').classList.remove('hidden');
+            console.log(error200);
+
+        })
+}
+
+fetchcards()
+retry_btn(fetchcards)
+handletaskform()
