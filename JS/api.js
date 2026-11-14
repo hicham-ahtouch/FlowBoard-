@@ -2,8 +2,15 @@
 import { state, affichage_cards, handletaskform, retry_btn } from './ui.js';
 function fetchcards() {
 
-    document.querySelector('#loading').classList.remove('hidden');
+    // document.querySelector('#loading').classList.remove('hidden');
 
+    Swal.fire({ 
+                title : 'loading cards...',
+                text : 'please wait...',
+                allowOutsideClick: false,
+                didOpen : () => {
+                    Swal.showLoading();
+    }})
     fetch('https://flowboard-api-virid.vercel.app/cards')
         .then(Response => {
             if (Response.ok === false) {
@@ -14,14 +21,8 @@ function fetchcards() {
         .then(data => {
             state.cards = data;
             affichage_cards(state.cards )
-            Swal.fire({
-                title : 'loading cards...',
-                text : 'please wait...',
-                allowOutsideClick: false,
-                didOpen : () => {
-                    Swal.showLoading();
-                }
-            });
+            Swal.close();
+            
             document.querySelector('#err-affichage').classList.add('hidden')
         })
         .catch(error200 => {
