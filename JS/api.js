@@ -1,6 +1,6 @@
 
-import { state, affichage_cards, handletaskform, retry_btn } from './ui.js';
-function fetchcards() {
+import { state, affichage_cards, } from './ui.js';
+ export  function fetchcards() {
 
     // document.querySelector('#loading').classList.remove('hidden');
 
@@ -33,6 +33,6 @@ function fetchcards() {
         })
 }
 
-fetchcards()
-retry_btn(fetchcards)
-handletaskform()
+// fetchcards()
+// retry_btn(fetchcards)
+// handletaskform()
