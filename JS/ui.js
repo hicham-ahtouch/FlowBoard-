@@ -1,7 +1,5 @@
 
-export const state = {
-    cards: []
-};
+
 
 export function affichage_cards(data) {
 
@@ -37,7 +35,7 @@ export function affichage_cards(data) {
     });
 }
 
-export function handletaskform(){
+export function handletaskform(the_new_task){
     const add_btn = document.querySelector('#add-task')
     const cancelBtn = document.querySelector('#cancel-task')
     const form = document.querySelector('#task-form')
@@ -63,60 +61,33 @@ export function handletaskform(){
             priority : priority,
             status: status
         };
+        the_new_task(newtask)
         // console.log(newtask);
         
-        state.cards.push(newtask)
-        console.log(state.cards);
+        // state.cards.push(newtask)
+        // console.log(state.cards);
         
         document.querySelector('#todo-cards').innerHTML = ""
         document.querySelector('#progress-cards').innerHTML = ""
         document.querySelector('#done-cards').innerHTML = ""
-        affichage_cards(state.cards);
+        // affichage_cards(state.cards);
         form.reset();
     });
 
 }
+export let cards=[]
+export function resolve(params) { 
+    cards=params.data 
+    affichage_cards(cards)
+    
+}
+function reject(){
+    
+}
 
 export function retry_btn(fetchcards){
-    document.querySelector('#try_again').addEventListener('click', function(){
+    document.querySelector('#try_again').addEventListener('click',()=>{
         fetchcards()
     })
 }
 // handletaskform()
-
-
-// function showtaskform(){
-//     const form = document.querySelector('#task-form');
-//     form.classList.remove('hidden');
-// }
-// function hidetaskform(){
-//     const form = document.querySelector('#task-form');
-//     form.classList.add('hidden');
-// }
-// function handletaskform(){
-//     const add_btn = document.querySelector('#add-task')
-//     const cancelBtn = document.querySelector('#cancel-task')
-//     const form = document.querySelector('#form_task')
-
-//     add_btn.addEventListener('click', function(){
-//         form.classList.remove('hidden');
-//     });
-//     cancelBtn.addEventListener('click', function(){
-//         form.classList.add('hidden')
-//     });
-//     form.addEventListener('submit', function(e){
-//         e.preventDefault();
-//         let title = document.querySelector('#title').value
-//         let priority = document.querySelector('#priority').value
-//         let status = document.querySelector('#status').value
-
-//         const newtask = {
-//             title: title,
-//             priority : priority,
-//             status: status
-//         };
-//         console.log(newtask);
-        
-//     })
-
-// }
