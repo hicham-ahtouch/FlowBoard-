@@ -37,5 +37,9 @@
 // retry_btn(fetchcards)
 // handletaskform()
 export async function fetchcards(){
-  return await axios.get('https://flowboard-api-virid.vercel.app/cards?');    
+  return await axios.get('https://flowboard-api-virid.vercel.app/cards');    
+}
+
+export async function getCard(id) {
+    return await axios.get('https://flowboard-api-virid.vercel.app/cards/' + id);
 }
