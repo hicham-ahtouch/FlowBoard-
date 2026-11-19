@@ -1,5 +1,5 @@
 
-import { getCard } from "./api.js"
+import { getCard, status_card, fetchcards } from "./api.js"
 export let cards = []
 export let selected_card_id;
 export function affichage_cards(data) {
@@ -166,8 +166,11 @@ function select_card_status(element) {
     let select = document.createElement('select');
     select.className = "bg-white px-3 py-2 rounded-lg ";
 
-    let Default = document.createElement('option')
-    Default.textContent = "choose the status"
+    // let Default = document.createElement('option')
+    // Default.textContent = "choose the status"
+    // Default.value = "";
+    // // Default.selected = true;
+    // // Default.disabled = true;
 
     let todo = document.createElement('option');
     todo.value = "todo";
@@ -177,24 +180,61 @@ function select_card_status(element) {
     let progress = document.createElement('option');
     progress.value = "in-progress";
     progress.textContent = "In Progress";
-    progress.className = "bg-blue-500 ";
+    progress.className = "bg-green-500 ";
 
     let done = document.createElement('option');
     done.value = "done";
     done.textContent = "Done";
-    done.className = "bg-green-500 ";
+    done.className = "bg-red-500 ";
 
     let change = document.createElement('button');
     change.textContent = "Confirm change";
     change.type = "button";
     change.className = "bg-blue-600 text-white px-2 py-1 text-xs rounded";
 
-    select.appendChild(Default)
 
+    // select.appendChild(Default)
     select.appendChild(todo)
     select.appendChild(progress)
     select.appendChild(done)
 
-    select.value = Default.value
-    return {select,change}
+    select.value = element.status
+
+    // select.addEventListener('change', function () {
+    //     console.log(select.value);
+    // })
+    if (todo.value === element.status) {
+        todo.disabled = true;
+    }
+    else if (progress.value === element.status) {
+        progress.disabled = true
+    }
+    else {
+        done.disabled = true;
+    }
+    change.addEventListener('click', async function () {
+        console.log(select.value);
+        console.log(element.id);
+        Swal.fire({
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        })
+        try {
+            await status_card(element.id, select.value)
+            console.log("success");
+            let Response = await fetchcards()
+
+            document.querySelector('#todo-cards').innerHTML = "";
+            document.querySelector('#progress-cards').innerHTML = "";
+            document.querySelector('#done-cards').innerHTML = "";
+
+            affichage_cards(Response.data);
+            Swal.close();
+        } catch (error) {
+            Swal.close()
+            Swal.fire("error", "We couldnt update the card","error")
+        }
+    })
+    return { select, change }
 }

@@ -66,3 +66,21 @@ export async function modif_card(id, data) {
     return Response.data;
     
 }
+
+export async function status_card(id, status) {
+    const Response = await axios.patch('https://flowboard-api-virid.vercel.app/cards/' + id, {status}, {
+        
+        headers: {
+            'X-Workspace': 'hicham'
+        },
+        params: {
+            password: "1234"
+        }
+    });
+
+    return Response.status;
+}
+// status_card(2, "done")
+// .then(Response => console.log(Response))
+// .catch(error => console.log(error)
+// )
