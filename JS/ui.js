@@ -52,7 +52,14 @@ export function affichage_cards(data) {
             document.querySelector('#edit-status').value = data.status
             document.querySelector('#edit-description').value = data.description
         });
+        let status_container = document.createElement('div');
+        status_container.className = "flex items-center gap-9"
 
+        let select_status = select_card_status(element);
+        status_container.appendChild(select_status.select);
+        status_container.appendChild(select_status.change);
+
+        card.appendChild(status_container)
         card.appendChild(priority);
         card.appendChild(title);
         card.appendChild(btn_modif);
@@ -134,12 +141,13 @@ export function reject() {
 export function retry_btn(fetchcards) {
     document.querySelector('#try_again').addEventListener('click', async function () {
         {
-            
+
             try {
                 Swal.fire({
-            didOpen : () => {
-                    Swal.showLoading();
-    }})
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                })
                 let Response = await fetchcards();
                 document.querySelector('#todo-cards').innerHTML = ""
                 document.querySelector('#progress-cards').innerHTML = ""
@@ -151,5 +159,42 @@ export function retry_btn(fetchcards) {
                 reject()
             }
         }
-    })}
-// handletaskform()
+    })
+}
+
+function select_card_status(element) {
+    let select = document.createElement('select');
+    select.className = "bg-white px-3 py-2 rounded-lg ";
+
+    let Default = document.createElement('option')
+    Default.textContent = "choose the status"
+
+    let todo = document.createElement('option');
+    todo.value = "todo";
+    todo.textContent = "To Do";
+    todo.className = "bg-yellow-500";
+
+    let progress = document.createElement('option');
+    progress.value = "in-progress";
+    progress.textContent = "In Progress";
+    progress.className = "bg-blue-500 ";
+
+    let done = document.createElement('option');
+    done.value = "done";
+    done.textContent = "Done";
+    done.className = "bg-green-500 ";
+
+    let change = document.createElement('button');
+    change.textContent = "Confirm change";
+    change.type = "button";
+    change.className = "bg-blue-600 text-white px-2 py-1 text-xs rounded";
+
+    select.appendChild(Default)
+
+    select.appendChild(todo)
+    select.appendChild(progress)
+    select.appendChild(done)
+
+    select.value = Default.value
+    return {select,change}
+}
