@@ -84,3 +84,16 @@ export async function status_card(id, status) {
 // .then(Response => console.log(Response))
 // .catch(error => console.log(error)
 // )
+
+
+export async function delete_card(id) {
+    const Response = await axios.delete('https://flowboard-api-virid.vercel.app/cards/' + id , {
+         headers: {
+            'X-Workspace': 'hicham'
+        },
+        params: {
+            password: "1234"
+        }
+    })
+    return Response.data;
+}

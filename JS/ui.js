@@ -1,5 +1,5 @@
 
-import { getCard, status_card, fetchcards } from "./api.js"
+import { delete_card, getCard, status_card, fetchcards } from "./api.js"
 export let cards = []
 export let selected_card_id;
 export function affichage_cards(data) {
@@ -30,8 +30,13 @@ export function affichage_cards(data) {
 
         let btn_modif = document.createElement('button');
         let cancel_btn = document.querySelector('#cancel-edit')
+        let btn_delete = delete_btn(element);
         let edit_modal = document.querySelector('#edit-modal')
         // let edit_form = document.querySelector('#edit-form')
+
+        btn_delete.addEventListener('click', function () {
+
+        })
 
         cancel_btn.addEventListener('click', function () {
             edit_modal.classList.add('hidden');
@@ -59,6 +64,7 @@ export function affichage_cards(data) {
         status_container.appendChild(select_status.select);
         status_container.appendChild(select_status.change);
 
+        card.appendChild(btn_delete);
         card.appendChild(status_container)
         card.appendChild(priority);
         card.appendChild(title);
@@ -233,8 +239,32 @@ function select_card_status(element) {
             Swal.close();
         } catch (error) {
             Swal.close()
-            Swal.fire("error", "We couldnt update the card","error")
+            Swal.fire("error", "We couldnt update the card", "error")
         }
     })
     return { select, change }
+}
+
+function delete_btn(element) {
+    let delete_btn = document.createElement('button')
+    delete_btn.textContent = "delete"
+    delete_btn.type = "button"
+    delete_btn.className = "bg-red-500 px-2 py-1 font-bold rounded"
+
+    delete_btn.addEventListener('click',async function () {
+        let result = await Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to recover this card!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it",
+            cancelButtonText: "Cancel"
+        });
+        if (result.isConfirmed === true) {
+            console.log(element.id);
+            await delete_card(element.id);
+        }
+    })
+
+    return delete_btn;
 }
