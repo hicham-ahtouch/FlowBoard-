@@ -22,7 +22,7 @@
 //             state.cards = data;
 //             affichage_cards(state.cards )
 //             Swal.close();
-            
+
 //             document.querySelector('#err-affichage').classList.add('hidden')
 //         })
 //         .catch(error200 => {
@@ -36,10 +36,33 @@
 // fetchcards()
 // retry_btn(fetchcards)
 // handletaskform()
-export async function fetchcards(){
-  return await axios.get('https://flowboard-api-virid.vercel.app/cards');    
+export async function fetchcards() {
+    return await axios.get('https://flowboard-api-virid.vercel.app/cards' ,{
+         headers: {
+            'X-Workspace': 'hicham'
+        },
+        password: "1234"
+    });
 }
 
 export async function getCard(id) {
-    return await axios.get('https://flowboard-api-virid.vercel.app/cards/' + id);
+    return await axios.get('https://flowboard-api-virid.vercel.app/cards/' + id ,{
+        headers: {
+            'X-Workspace': 'hicham'
+        },
+        password: "1234"
+    })
+}
+export async function modif_card(id, data) {
+    const Response = await axios.put('https://flowboard-api-virid.vercel.app/cards/' + id, data, {
+        headers: {
+            'X-Workspace': 'hicham'
+        },
+        params: {
+            password: "1234"
+        }
+    })
+    console.log(Response.data);
+    return Response.data;
+    
 }
