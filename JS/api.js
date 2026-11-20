@@ -97,13 +97,17 @@ export async function delete_card(id) {
     })
     return Response.data;
 }
-
+//named paramms
 export async function reset_cards() {
-    const Response = await axios.post('https://flowboard-api-virid.vercel.app/reset?password=1234', {
+    const Response = await axios.post('https://flowboard-api-virid.vercel.app/reset', {},
+        {
         headers: {
             'X-Workspace': 'hicham'
+        },
+        params:{
+            password : "1234"
         }
-    });
+    })
 
     return Response.data;
 

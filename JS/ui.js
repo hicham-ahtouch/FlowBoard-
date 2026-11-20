@@ -305,3 +305,54 @@ export function reset_btn() {
     })
 }
 
+export async function filter_cards() {
+    let response = await fetchcards();
+    let cards = response.data;
+
+    let search_text = document.querySelector('#search').value.toLowerCase();
+    let selected_priority = document.querySelector('#filter-priority').value;
+    let selected_assignee = document.querySelector('#filter-assignee').value;
+    console.log(selected_priority);
+    console.log(selected_assignee);
+    console.log(search_text);
+
+    let filtered_search = cards.filter(element => {
+        if (element.title.toLowerCase().includes(search_text)) {
+            let matches_search = element
+            return matches_search
+        }
+    })
+    let filtered_prio = cards.filter(element => {
+        if (element.priority == selected_priority) {
+            let matches_priority = element.priority
+            return matches_priority
+        }
+    })
+    let filtered_assigne = cards.filter(element => {
+        if (element.assigne == selected_assignee) {
+            let matches_priority = element.priority
+            return matches_assignee
+        }
+    })
+    // let matches_priority = element.priority == selected_priority
+    // let matches_assignee = element.assigne == selected_assignee
+
+    // return (matches_search, matches_priority , matches_assignee)
+
+
+    console.log(filtered_cards);
+    document.querySelector('#todo-cards').innerHTML = "";
+    document.querySelector('#progress-cards').innerHTML = "";
+    document.querySelector('#done-cards').innerHTML = "";
+
+    affichage_cards(filtered_cards);
+}
+
+export function filter_targets() {
+    let search = document.querySelector('#search')
+    search.addEventListener('input', filter_cards)
+    let priority = document.querySelector('#filter-priority')
+    priority.addEventListener('change', filter_cards)
+    let assigne = document.querySelector('#filter-assignee')
+    assigne.addEventListener('change', filter_cards)
+}
