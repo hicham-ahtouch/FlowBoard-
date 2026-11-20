@@ -99,14 +99,28 @@ export async function delete_card(id) {
 }
 
 export async function reset_cards() {
-    const Response = await axios.post('https://flowboard-api-virid.vercel.app/reset', null, {
+    const Response = await axios.post('https://flowboard-api-virid.vercel.app/reset?password=1234', {
         headers: {
             'X-Workspace': 'hicham'
-        },
-        params: {
-            password: "1234"
         }
     });
 
     return Response.data;
+
+// const options = {
+//   method: 'POST',
+//   url: 'https://flowboard-api-virid.vercel.app/reset?password=1234',
+//   headers: {
+//     'X-Workspace': 'hicham'
+//   }
+// }
+
+// try {
+//   const { data } = await axios.request(options)
+//   console.log(data)
+// } catch (error) {
+//   console.error(error)
+// }
 }
+
+

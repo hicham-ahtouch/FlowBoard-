@@ -132,6 +132,7 @@ export function resolve(params) {
     document.querySelector('#err-affichage').classList.add('hidden')
 
 }
+
 export function reject() {
     document.querySelector('#err-affichage').classList.remove('hidden');
     // Swal.fire({ 
@@ -303,3 +304,4 @@ export function reset_btn() {
         }
     })
 }
+

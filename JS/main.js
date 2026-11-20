@@ -1,6 +1,13 @@
 import {reset_btn, selected_card_id, handletaskform, retry_btn, resolve, reject } from './ui.js';
 import { fetchcards, modif_card } from './api.js';
 
+let local_propertie_value = "high"
+const local_propertie_key = "propertie" 
+localStorage.setItem(local_propertie_key , local_propertie_value)
+
+
+
+
 try {
     const cards = await fetchcards();
     resolve(cards.data)
@@ -48,3 +55,5 @@ edit_form.addEventListener('submit', async function (e) {
 reset_btn()
 retry_btn(fetchcards)
 handletaskform()
+
+
