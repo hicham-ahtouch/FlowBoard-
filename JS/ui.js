@@ -1,5 +1,5 @@
 
-import { delete_card, getCard, status_card, fetchcards } from "./api.js"
+import { reset_cards, delete_card, getCard, status_card, fetchcards } from "./api.js"
 export let cards = []
 export let selected_card_id;
 export function affichage_cards(data) {
@@ -251,7 +251,7 @@ function delete_btn(element) {
     delete_btn.type = "button"
     delete_btn.className = "bg-red-500 px-2 py-1 font-bold rounded"
 
-    delete_btn.addEventListener('click',async function () {
+    delete_btn.addEventListener('click', async function () {
         let result = await Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to recover this card!",
@@ -261,10 +261,45 @@ function delete_btn(element) {
             cancelButtonText: "Cancel"
         });
         if (result.isConfirmed === true) {
-            console.log(element.id);
-            await delete_card(element.id);
+            try {
+                console.log(element.id);
+                await delete_card(element.id);
+                let Response = await fetchcards()
+                document.querySelector('#todo-cards').innerHTML = "";
+                document.querySelector('#progress-cards').innerHTML = "";
+                document.querySelector('#done-cards').innerHTML = "";
+
+                affichage_cards(Response.data)
+
+                Swal.fire("Deleted!", "the card has been deleted.", "success");
+            } catch (error) {
+                console.log(error);
+
+                Swal.fire("Error!", "could not delete the card.", "error");
+            }
         }
     })
-
     return delete_btn;
+}
+export function reset_btn() {
+    let reset_button = document.querySelector('#reset_btn')
+    reset_button.addEventListener('click', async function () {
+        let result = await Swal.fire({
+            title: "Are you sure?",
+            text: "This will reset all cards and members!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, reset",
+            cancelButtonText: "Cancel"
+        })
+        if (result.isConfirmed === true) {
+            await reset_cards();
+            let Response = await fetchcards();
+
+            document.querySelector('#todo-cards').innerHTML = "";
+            document.querySelector('#progress-cards').innerHTML = "";
+            document.querySelector('#done-cards').innerHTML = "";
+            affichage_cards(Response.data);
+        }
+    })
 }

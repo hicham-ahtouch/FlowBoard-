@@ -1,4 +1,4 @@
-import { selected_card_id, handletaskform, retry_btn, resolve, reject } from './ui.js';
+import {reset_btn, selected_card_id, handletaskform, retry_btn, resolve, reject } from './ui.js';
 import { fetchcards, modif_card } from './api.js';
 
 try {
@@ -45,6 +45,6 @@ edit_form.addEventListener('submit', async function (e) {
     }
 });
 
-
+reset_btn()
 retry_btn(fetchcards)
 handletaskform()
