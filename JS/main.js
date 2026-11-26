@@ -1,9 +1,9 @@
-import {reset_btn, selected_card_id, handletaskform, retry_btn, resolve, reject, filter_targets } from './ui.js';
+import {fill_edit_member_select , fill_member_select,fill_assignees , reset_btn, selected_card_id, handletaskform, retry_btn, resolve, reject, filter_targets } from './ui.js';
 import { fetchcards, modif_card } from './api.js';
 
-let local_propertie_value = "high"
-const local_propertie_key = "propertie" 
-localStorage.setItem(local_propertie_key , local_propertie_value)
+// let local_propertie_value = "high"
+// const local_propertie_key = "propertie" 
+// localStorage.setItem(local_propertie_key , local_propertie_value)
 
 
 
@@ -26,7 +26,8 @@ edit_form.addEventListener('submit', async function (e) {
         title: document.querySelector('#edit-title').value,
         description: document.querySelector('#edit-description').value,
         priority: document.querySelector('#edit-priority').value,
-        status: document.querySelector('#edit-status').value
+        status: document.querySelector('#edit-status').value,
+        assignee: document.querySelector('#edit-assignee').value
     };
     try {
         Swal.fire({
@@ -52,6 +53,10 @@ edit_form.addEventListener('submit', async function (e) {
     }
 });
 
+
+fill_edit_member_select()
+fill_member_select()
+fill_assignees()
 filter_targets()
 reset_btn()
 retry_btn(fetchcards)

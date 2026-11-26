@@ -41,7 +41,9 @@ export async function fetchcards() {
          headers: {
             'X-Workspace': 'hicham'
         },
-        password: "1234"
+        params: {
+            password: "1234"
+        }
     });
 }
 
@@ -50,7 +52,9 @@ export async function getCard(id) {
         headers: {
             'X-Workspace': 'hicham'
         },
-        password: "1234"
+        params: {
+            password: "1234"
+        }
     })
 }
 export async function modif_card(id, data) {
@@ -111,20 +115,28 @@ export async function reset_cards() {
 
     return Response.data;
 
-// const options = {
-//   method: 'POST',
-//   url: 'https://flowboard-api-virid.vercel.app/reset?password=1234',
-//   headers: {
-//     'X-Workspace': 'hicham'
-//   }
-// }
-
-// try {
-//   const { data } = await axios.request(options)
-//   console.log(data)
-// } catch (error) {
-//   console.error(error)
-// }
 }
 
+export async function add_card(newtask) {
+    const Response = await axios.post('https://flowboard-api-virid.vercel.app/cards', newtask, {
+        headers: {
+            'X-Workspace': 'hicham'
+        },
+        params: {
+            password: "1234"
+        }
+    });
 
+    return Response.data;
+}
+
+export async function fetch_members() {
+    return await axios.get('https://flowboard-api-virid.vercel.app/members', {
+        headers: {
+            'X-Workspace': 'hicham'
+        },
+        params: {
+            password: "1234"
+        }
+    });
+}

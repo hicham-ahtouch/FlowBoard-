@@ -1,5 +1,5 @@
 
-import { reset_cards, delete_card, getCard, status_card, fetchcards } from "./api.js"
+import { fetch_members , add_card, reset_cards, delete_card, getCard, status_card, fetchcards } from "./api.js"
 export let cards = []
 export let selected_card_id;
 export function affichage_cards(data) {
@@ -27,6 +27,9 @@ export function affichage_cards(data) {
 
         let title = document.createElement('p');
         title.textContent = element.title;
+
+        let assignee = document.createElement('p');
+        assignee.textContent = element.assignee;
 
         let btn_modif = document.createElement('button');
         let cancel_btn = document.querySelector('#cancel-edit')
@@ -56,6 +59,7 @@ export function affichage_cards(data) {
             document.querySelector('#edit-priority').value = data.priority
             document.querySelector('#edit-status').value = data.status
             document.querySelector('#edit-description').value = data.description
+            document.querySelector('#edit-assignee').value = data.assignee
         });
         let status_container = document.createElement('div');
         status_container.className = "flex items-center gap-9"
@@ -68,7 +72,9 @@ export function affichage_cards(data) {
         card.appendChild(status_container)
         card.appendChild(priority);
         card.appendChild(title);
+        card.appendChild(assignee);
         card.appendChild(btn_modif);
+
 
         if (element.status === "todo") {
             document.querySelector('#todo-cards').appendChild(card);
@@ -94,11 +100,12 @@ export function handletaskform() {
     cancelBtn.addEventListener('click', function () {
         form.classList.add('hidden')
     });
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', async function (e) {
         e.preventDefault();
         let title = document.querySelector('#title').value
         let priority = document.querySelector('#priority').value
         let status = document.querySelector('#status').value
+        let assignee = document.querySelector('#assignee').value
 
         if (title === "" || priority === "" || status === "") {
             alert('svp remplir tous les champs')
@@ -107,20 +114,33 @@ export function handletaskform() {
         const newtask = {
             title: title,
             priority: priority,
-            status: status
+            status: status,
+            assignee: assignee
         };
         // the_new_task(newtask)
         // console.log(newtask);
 
-        cards.push(newtask)
-        console.log(cards);
+        // cards.push(newtask)
+        // console.log(cards);
+        try {
+            await add_card(newtask);
 
-        document.querySelector('#todo-cards').innerHTML = ""
-        document.querySelector('#progress-cards').innerHTML = ""
-        document.querySelector('#done-cards').innerHTML = ""
-        affichage_cards(cards);
-        form.classList.add('hidden');
-        form.reset();
+            document.querySelector('#todo-cards').innerHTML = ""
+            document.querySelector('#progress-cards').innerHTML = ""
+            document.querySelector('#done-cards').innerHTML = ""
+
+            let Response = await fetchcards();
+            let new_cards = Response.data
+            affichage_cards(new_cards);
+            fill_assignees();
+
+            form.classList.add('hidden');
+            form.reset();
+        } catch (error) {
+            console.log(error);
+            console.log(error.response.data);
+            Swal.fire("Error!", "could not add the card.", "error");
+        }
     });
 
 }
@@ -312,35 +332,19 @@ export async function filter_cards() {
     let search_text = document.querySelector('#search').value.toLowerCase();
     let selected_priority = document.querySelector('#filter-priority').value;
     let selected_assignee = document.querySelector('#filter-assignee').value;
-    console.log(selected_priority);
-    console.log(selected_assignee);
-    console.log(search_text);
+    // console.log(selected_priority);
+    // console.log(selected_assignee);
+    // console.log(search_text);
 
-    let filtered_search = cards.filter(element => {
-        if (element.title.toLowerCase().includes(search_text)) {
-            let matches_search = element
-            return matches_search
-        }
-    })
-    let filtered_prio = cards.filter(element => {
-        if (element.priority == selected_priority) {
-            let matches_priority = element.priority
-            return matches_priority
-        }
-    })
-    let filtered_assigne = cards.filter(element => {
-        if (element.assigne == selected_assignee) {
-            let matches_priority = element.priority
-            return matches_assignee
-        }
-    })
-    // let matches_priority = element.priority == selected_priority
-    // let matches_assignee = element.assigne == selected_assignee
+    let filtered_cards = cards.filter(element => {
+        let matches_search = element.title.toLowerCase().includes(search_text);
+        let matches_priority = selected_priority === "" || element.priority === selected_priority;
+        let matches_assignee = selected_assignee === "" || element.assignee === selected_assignee;
 
-    // return (matches_search, matches_priority , matches_assignee)
+        return matches_search && matches_priority && matches_assignee;
+    });
 
-
-    console.log(filtered_cards);
+    // console.log(filtered_cards);
     document.querySelector('#todo-cards').innerHTML = "";
     document.querySelector('#progress-cards').innerHTML = "";
     document.querySelector('#done-cards').innerHTML = "";
@@ -355,4 +359,53 @@ export function filter_targets() {
     priority.addEventListener('change', filter_cards)
     let assigne = document.querySelector('#filter-assignee')
     assigne.addEventListener('change', filter_cards)
+}
+
+export async function fill_assignees() {
+    let response = await fetchcards();
+    let cards = response.data;
+
+    let select = document.querySelector('#filter-assignee');
+    select.innerHTML = '<option value="">les assignes</option>';
+
+    let names = [];
+
+    cards.forEach(card => {
+        let name = card.assignee;
+
+        if (!names.includes(name)) {
+            names.push(name);
+        }
+    });
+    names.forEach(name => {
+        let option = document.createElement('option');
+        option.value = name;
+        option.textContent = name;
+        select.appendChild(option);
+    });
+}
+
+export async function fill_member_select() {
+    let Response = await fetch_members();
+    let memebers_names = Response.data
+    let select = document.querySelector('#assignee');
+
+    memebers_names.forEach(member => {
+        let option = document.createElement('option');
+        option.value = member.name;
+        option.textContent = member.name;
+        select.appendChild(option);
+    });
+}
+export async function fill_edit_member_select() {
+    let Response = await fetch_members();
+    let memebers_names = Response.data
+    let select = document.querySelector('#edit-assignee');
+
+    memebers_names.forEach(member => {
+        let option = document.createElement('option');
+        option.value = member.name;
+        option.textContent = member.name;
+        select.appendChild(option);
+    });
 }
