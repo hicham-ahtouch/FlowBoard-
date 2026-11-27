@@ -1,5 +1,6 @@
 
-import { fetch_members , add_card, reset_cards, delete_card, getCard, status_card, fetchcards } from "./api.js"
+import { clear_filters,save_filters, get_filters } from "./store.js"
+import { fetch_members, add_card, reset_cards, delete_card, getCard, status_card, fetchcards } from "./api.js"
 export let cards = []
 export let selected_card_id;
 export function affichage_cards(data) {
@@ -250,13 +251,14 @@ function select_card_status(element) {
         try {
             await status_card(element.id, select.value)
             console.log("success");
-            let Response = await fetchcards()
+            await filter_cards();
+            // let Response = await fetchcards()
 
-            document.querySelector('#todo-cards').innerHTML = "";
-            document.querySelector('#progress-cards').innerHTML = "";
-            document.querySelector('#done-cards').innerHTML = "";
+            // document.querySelector('#todo-cards').innerHTML = "";
+            // document.querySelector('#progress-cards').innerHTML = "";
+            // document.querySelector('#done-cards').innerHTML = "";
 
-            affichage_cards(Response.data);
+            // affichage_cards(Response.data);
             Swal.close();
         } catch (error) {
             Swal.close()
@@ -285,12 +287,13 @@ function delete_btn(element) {
             try {
                 console.log(element.id);
                 await delete_card(element.id);
-                let Response = await fetchcards()
-                document.querySelector('#todo-cards').innerHTML = "";
-                document.querySelector('#progress-cards').innerHTML = "";
-                document.querySelector('#done-cards').innerHTML = "";
+                await filter_cards();
+                // let Response = await fetchcards()
+                // document.querySelector('#todo-cards').innerHTML = "";
+                // document.querySelector('#progress-cards').innerHTML = "";
+                // document.querySelector('#done-cards').innerHTML = "";
 
-                affichage_cards(Response.data)
+                // affichage_cards(Response.data)
 
                 Swal.fire("Deleted!", "the card has been deleted.", "success");
             } catch (error) {
@@ -314,6 +317,7 @@ export function reset_btn() {
             cancelButtonText: "Cancel"
         })
         if (result.isConfirmed === true) {
+            clear_filters()
             await reset_cards();
             let Response = await fetchcards();
 
@@ -326,6 +330,8 @@ export function reset_btn() {
 }
 
 export async function filter_cards() {
+
+    save_filters()
     let response = await fetchcards();
     let cards = response.data;
 
@@ -408,4 +414,13 @@ export async function fill_edit_member_select() {
         option.textContent = member.name;
         select.appendChild(option);
     });
+}
+
+export function restore_filters() {
+    let filters = get_filters();
+    // console.log( filters);
+    document.querySelector('#filter-priority').value = filters.priority;
+    document.querySelector('#filter-assignee').value = filters.assignee;
+    document.querySelector('#search').value = filters.q;
+    filter_cards();
 }

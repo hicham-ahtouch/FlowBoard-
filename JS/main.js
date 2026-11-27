@@ -1,4 +1,4 @@
-import {fill_edit_member_select , fill_member_select,fill_assignees , reset_btn, selected_card_id, handletaskform, retry_btn, resolve, reject, filter_targets } from './ui.js';
+import {filter_cards , restore_filters ,fill_edit_member_select , fill_member_select,fill_assignees , reset_btn, selected_card_id, handletaskform, retry_btn, resolve, reject, filter_targets } from './ui.js';
 import { fetchcards, modif_card } from './api.js';
 
 // let local_propertie_value = "high"
@@ -36,13 +36,14 @@ edit_form.addEventListener('submit', async function (e) {
     }})
         await modif_card(selected_card_id, updated_card);
         edit_modal.classList.add('hidden');
-        let Response = await fetchcards()
+        // let Response = await fetchcards()
+        await filter_cards()
         Swal.close();
-         document.querySelector('#todo-cards').innerHTML = ""
-        document.querySelector('#progress-cards').innerHTML = ""
-        document.querySelector('#done-cards').innerHTML = ""
+        //  document.querySelector('#todo-cards').innerHTML = ""
+        // document.querySelector('#progress-cards').innerHTML = ""
+        // document.querySelector('#done-cards').innerHTML = ""
         
-    resolve(Response.data)
+    // resolve(Response.data)
         }
      catch (error) {
         Swal.close();
@@ -54,12 +55,15 @@ edit_form.addEventListener('submit', async function (e) {
 });
 
 
+
 fill_edit_member_select()
 fill_member_select()
-fill_assignees()
+await fill_assignees()
+restore_filters()
 filter_targets()
 reset_btn()
 retry_btn(fetchcards)
 handletaskform()
+
 
 

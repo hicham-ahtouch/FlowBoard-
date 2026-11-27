@@ -10,6 +10,7 @@
 const local_propertie_key = "flowboard:filters";
 
 export function save_filters() {
+    // console.log("SAVE");
     let filters = {
         priority: document.querySelector('#filter-priority').value,
         assignee: document.querySelector('#filter-assignee').value,
@@ -30,4 +31,8 @@ export function get_filters() {
         };
     }
     return JSON.parse(filters);
+}
+
+export function clear_filters() {
+    localStorage.removeItem(local_propertie_key);
 }
